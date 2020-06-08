@@ -36,8 +36,12 @@ class MyCanvasView(context: Context?) : View(context) {
 
     //The path is being drawn when following the user's touch on the screen
     private var path = Path()
-    private var motionEventX: Float? = 0f
-    private var motionEventY: Float? = 0f
+    private var motionTouchEventX = 0f
+    private var motionTouchEventY = 0f
+
+    //Cache the last x and y values
+    private var currentX = 0f
+    private var currentY = 0f
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -57,7 +61,13 @@ class MyCanvasView(context: Context?) : View(context) {
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
     }
 
-    private fun touchStart() {}
+    private fun touchStart() {
+        path.reset()
+        path.moveTo(motionTouchEventX, motionTouchEventY)
+        currentX = motionTouchEventX
+        currentY = motionTouchEventY
+
+    }
 
     private fun touchMove() {}
 
@@ -65,8 +75,11 @@ class MyCanvasView(context: Context?) : View(context) {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        motionEventX = event?.x
-        motionEventY = event?.y
+
+        event.let {
+            motionTouchEventX = this.x
+            motionTouchEventY = this.y
+        }
 
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> touchStart()
@@ -75,4 +88,5 @@ class MyCanvasView(context: Context?) : View(context) {
         }
         return true
     }
+
 }
