@@ -95,20 +95,23 @@ class MyCanvasView(context: Context?) : View(context) {
         }
     }
 
-    private fun touchUp() {}
+    private fun touchUp() {
+        //Reset the path so it doesn't get draw again.
+        path.reset()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        event.let {
-            motionTouchEventX = this.x
-            motionTouchEventY = this.y
-        }
+        if (event != null) {
+            motionTouchEventX = event.x
+            motionTouchEventY = event.y
 
-        when (event?.action) {
-            MotionEvent.ACTION_DOWN -> touchStart()
-            MotionEvent.ACTION_MOVE -> touchMove()
-            MotionEvent.ACTION_UP -> touchUp()
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> touchStart()
+                MotionEvent.ACTION_MOVE -> touchMove()
+                MotionEvent.ACTION_UP -> touchUp()
+            }
         }
         return true
     }
