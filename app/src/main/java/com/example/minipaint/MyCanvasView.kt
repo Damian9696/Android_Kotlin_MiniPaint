@@ -1,10 +1,12 @@
 package com.example.minipaint
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
@@ -34,6 +36,8 @@ class MyCanvasView(context: Context?) : View(context) {
 
     //The path is being drawn when following the user's touch on the screen
     private var path = Path()
+    private var motionEventX: Float? = 0f
+    private var motionEventY: Float? = 0f
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -51,5 +55,24 @@ class MyCanvasView(context: Context?) : View(context) {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
+    }
+
+    private fun touchStart() {}
+
+    private fun touchMove() {}
+
+    private fun touchUp() {}
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        motionEventX = event?.x
+        motionEventY = event?.y
+
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> touchStart()
+            MotionEvent.ACTION_MOVE -> touchMove()
+            MotionEvent.ACTION_UP -> touchUp()
+        }
+        return true
     }
 }
