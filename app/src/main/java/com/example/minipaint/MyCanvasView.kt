@@ -17,7 +17,7 @@ class MyCanvasView(context: Context?) : View(context) {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        //Leaving the old Bitmaps around produce memory leak, to fix this, recycle extrBitmap before
+        //Leaving the old Bitmaps around produce memory leak, to fix this, recycle extraBitmap before
         //creating the new one
         if (::extraBitmap.isInitialized) extraBitmap.recycle()
 
@@ -25,5 +25,10 @@ class MyCanvasView(context: Context?) : View(context) {
         extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         extraCanvas = Canvas(extraBitmap)
         extraCanvas.drawColor(backgroundColor)
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        canvas?.drawBitmap(extraBitmap, 0f, 0f, null);
     }
 }
